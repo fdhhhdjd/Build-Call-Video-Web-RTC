@@ -25,7 +25,6 @@ const Dashboard = () => {
           <div className="dashboard_content_container">
             <DirectCall />
             {/* <GroupCall /> */}
-            {console.log(callState, "0----")}
             {callState !== callStates.CALL_IN_PROGRESS && (
               <DashboardDinFormation username={username} />
             )}
