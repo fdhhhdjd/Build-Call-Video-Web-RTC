@@ -3,7 +3,8 @@ import { setActiveUserInitiate } from "../../Redux/Action/ActionMain";
 import store from "../../Redux/Store";
 import * as webRTCHandler from "../WebRTCHandler/WebRTCHandler";
 import { broadcastEventTypes } from "../../Utils/ShareData";
-const SERVER = "http://localhost:5001";
+// const SERVER = "http://localhost:5001";
+const SERVER = "https://video-call-dev.herokuapp.com";
 
 let socket;
 
