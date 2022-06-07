@@ -1,16 +1,19 @@
 const express = require("express");
 const socket = require("socket.io");
 const { ExpressPeerServer } = require("peer");
+const dotenv = require("dotenv");
 const { v4: uuidv4 } = require("uuid");
-const PORT = 5001;
+dotenv.config({ path: ".env" });
 
 const app = express();
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({ path: ".env" });
+}
 
-const server = app.listen(PORT, () => {
-  console.log(`server is listening on port--- ${PORT}`);
-  console.log(`http://localhost:${PORT}`);
-});
-
+const PORT = process.env.PORT || 5001;
+const server = app.listen(PORT, () =>
+  console.log(`server is listening on port:http://localhost:${PORT}`)
+);
 const peerServer = ExpressPeerServer(server, {
   debug: true,
 });
