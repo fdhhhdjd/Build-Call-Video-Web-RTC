@@ -13,7 +13,11 @@ import {
   switchForScreenSharingStream,
   hangUp,
 } from "../../Utils/WebRTCHandler/WebRTCHandler";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setCameraEnabledInitiate,
+  setMicrophoneEnabledInitiate,
+} from "../../Redux/Action/ActionCall";
 
 const styles = {
   buttonContainer: {
@@ -30,21 +34,28 @@ const styles = {
 };
 
 const ConversationButtons = () => {
-  const { localStream, screenSharingActive } = useSelector(
-    (state) => state.call
-  );
-  const [localMicrophoneEnabled, setMicrophoneEnabled] = useState();
-  const [localCameraEnabled, setCameraEnabled] = useState();
+  const {
+    localStream,
+    screenSharingActive,
+    localMicrophoneEnabled,
+    localCameraEnabled,
+  } = useSelector((state) => state.call);
+
+  const dispatch = useDispatch();
   const handleMicButtonPressed = () => {
     const micEnabled = localMicrophoneEnabled;
     localStream.getAudioTracks()[0].enabled = !micEnabled;
-    setMicrophoneEnabled(!micEnabled);
+    dispatch(setMicrophoneEnabledInitiate({ flag: !micEnabled }));
   };
 
   const handleCameraButtonPressed = () => {
     const cameraEnabled = localCameraEnabled;
     localStream.getVideoTracks()[0].enabled = !cameraEnabled;
-    setCameraEnabled(!cameraEnabled);
+    dispatch(
+      setCameraEnabledInitiate({
+        flag: !cameraEnabled,
+      })
+    );
   };
 
   const handleScreenSharingButtonPressed = () => {

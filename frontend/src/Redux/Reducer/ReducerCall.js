@@ -78,13 +78,13 @@ const CallReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        localMicrophoneEnabled: action.payload,
+        localCameraEnabled: action.payload,
       };
     case types.CALL_SET_LOCAL_MICROPHONE_ENABLED_SUCCESS:
       return {
         ...state,
         loading: false,
-        localCameraEnabled: action.payload,
+        localMicrophoneEnabled: action.payload,
       };
     case types.CALL_SET_SCREEN_SHARING_ACTIVE_SUCCESS:
       return {

@@ -95,6 +95,30 @@ export const setScreenSharingActiveFail = (error) => ({
   type: types.CALL_SET_SCREEN_SHARING_ACTIVE_FAIL,
   payload: error,
 });
+//?CALL_SET_LOCAL_CAMERA_ENABLED_SUCCESS
+export const setCameraEnabledStart = () => ({
+  type: types.CALL_SET_LOCAL_CAMERA_ENABLED_START,
+});
+export const setCameraEnabledSuccess = (apis) => ({
+  type: types.CALL_SET_LOCAL_CAMERA_ENABLED_SUCCESS,
+  payload: apis,
+});
+export const setCameraEnabledFail = (error) => ({
+  type: types.CALL_SET_LOCAL_CAMERA_ENABLED_FAIL,
+  payload: error,
+});
+//?CALL_SET_LOCAL_MICROPHONE_ENABLED_SUCCESS
+export const setMicrophoneEnabledStart = () => ({
+  type: types.CALL_SET_LOCAL_MICROPHONE_ENABLED_START,
+});
+export const setMicrophoneEnabledSuccess = (apis) => ({
+  type: types.CALL_SET_LOCAL_MICROPHONE_ENABLED_SUCCESS,
+  payload: apis,
+});
+export const setMicrophoneEnabledFail = (error) => ({
+  type: types.CALL_SET_LOCAL_MICROPHONE_ENABLED_FAIL,
+  payload: error,
+});
 //! Set local Stream
 export const setLocalStreamInitiate = (stream) => async (dispatch) => {
   try {
@@ -182,6 +206,30 @@ export const setScreenSharingActiveInitiate =
       dispatch(setScreenSharingActiveSuccess(active));
     } catch (error) {
       dispatch(setScreenSharingActiveFail(error));
+    }
+  };
+//!On/Off camera
+export const setCameraEnabledInitiate =
+  ({ flag }) =>
+  async (dispatch) => {
+    try {
+      dispatch(setCameraEnabledStart());
+
+      dispatch(setCameraEnabledSuccess(flag));
+    } catch (error) {
+      dispatch(setCameraEnabledFail(error));
+    }
+  };
+//!On/Off Mid
+export const setMicrophoneEnabledInitiate =
+  ({ flag }) =>
+  async (dispatch) => {
+    try {
+      dispatch(setMicrophoneEnabledStart());
+
+      dispatch(setMicrophoneEnabledSuccess(flag));
+    } catch (error) {
+      dispatch(setMicrophoneEnabledFail(error));
     }
   };
 

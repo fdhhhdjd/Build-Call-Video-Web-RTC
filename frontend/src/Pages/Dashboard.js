@@ -44,7 +44,7 @@ const Dashboard = () => {
         </div>
         <footer>
           {" "}
-          <small>&#9400; Copyright 2021, shubham khatal</small>{" "}
+          <small>&#9400; Web RTC Tai Heo Dev</small>{" "}
         </footer>
       </div>
     </React.Fragment>

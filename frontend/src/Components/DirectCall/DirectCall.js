@@ -6,6 +6,7 @@ import IncomingCallDialog from "../IncomingCallDialog/IncomingCallDialog";
 import CallingDialog from "../CallingDialog/CallingDialog";
 import RemoteVideoView from "../RemoteVideoView/RemoteVideoView";
 import ConversationButtons from "../ConversationButtons/ConversationButtons";
+import CallRejectedDialog from "../CallRejectedDialog/CallRejectedDialog";
 const DirectCall = () => {
   const {
     localStream,
@@ -13,6 +14,7 @@ const DirectCall = () => {
     callState,
     callingDialogVisible,
     remoteStream,
+    callRejected,
   } = useSelector((state) => state.call);
   return (
     <React.Fragment>
@@ -20,6 +22,9 @@ const DirectCall = () => {
 
       {remoteStream && callState === callStates.CALL_IN_PROGRESS && (
         <RemoteVideoView remoteStream={remoteStream} />
+      )}
+      {callRejected.rejected && (
+        <CallRejectedDialog reason={callRejected.reason} />
       )}
       <LocalVideoView localStream={localStream} />
       {callState === callStates.CALL_REQUESTED && (

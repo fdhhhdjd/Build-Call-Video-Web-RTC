@@ -252,11 +252,11 @@ const resetCallDataAfterHangUp = () => {
   localStream.getVideoTracks()[0].enabled = true;
   localStream.getAudioTracks()[0].enabled = true;
 
-  // if (store.getState().call.screenSharingActive) {
-  //   screenSharingStream.getTracks().forEach((track) => {
-  //     track.stop();
-  //   });
-  // }
+  if (store.getState().call.screenSharingActive) {
+    screenSharingStream.getTracks().forEach((track) => {
+      track.stop();
+    });
+  }
 
   store.dispatch(resetCallDataStateInitiate());
 };
