@@ -8,6 +8,8 @@ import {
   GroupCallRoomsList,
 } from "../Imports/Index";
 import * as webRTCHandler from "../Utils/WebRTCHandler/WebRTCHandler";
+import * as webRTCGroupHandler from "../Utils/WebRTCHandler/webRTCGroupCallHandler";
+
 import "../Styles/Dashboard.css";
 import { callStates } from "../Utils/ShareData";
 import { useSelector } from "react-redux";
@@ -17,6 +19,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     webRTCHandler.getLocalStream();
+    webRTCGroupHandler.connectWithMyPeer();
   }, []);
   return (
     <React.Fragment>
@@ -24,13 +27,13 @@ const Dashboard = () => {
         <div className="dashboard_left_section">
           <div className="dashboard_content_container">
             <DirectCall />
-            {/* <GroupCall /> */}
+            <GroupCall />
             {callState !== callStates.CALL_IN_PROGRESS && (
               <DashboardDinFormation username={username} />
             )}
           </div>
           <div className="dashboard_rooms_container background_secondary_color">
-            {/* <GroupCallRoomsList /> */}
+            <GroupCallRoomsList />
           </div>
         </div>
         <div className="dashboard_right_section background_secondary_color">

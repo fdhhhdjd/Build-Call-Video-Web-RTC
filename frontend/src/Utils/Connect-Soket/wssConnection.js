@@ -1,10 +1,15 @@
 import socketClient from "socket.io-client";
-import { setActiveUserInitiate } from "../../Redux/Action/ActionMain";
+import {
+  setActiveUserInitiate,
+  setGroupCallRoomInitiate,
+} from "../../Redux/Action/ActionMain";
 import store from "../../Redux/Store";
 import * as webRTCHandler from "../WebRTCHandler/WebRTCHandler";
+import * as webRTCGroupCallHandler from "../WebRTCHandler/webRTCGroupCallHandler";
+
 import { broadcastEventTypes } from "../../Utils/ShareData";
-// const SERVER = "http://localhost:5001";
-const SERVER = "https://video-call-dev.herokuapp.com";
+const SERVER = "http://localhost:5001";
+// const SERVER = "https://video-call-dev.herokuapp.com";
 
 let socket;
 
@@ -47,13 +52,13 @@ export const connectWithWebSocket = () => {
 
   // listeners related with group calls
 
-  // socket.on("group-call-join-request", (data) => {
-  //   webRTCGroupCallHandler.connectToNewUser(data);
-  // });
+  socket.on("group-call-join-request", (data) => {
+    webRTCGroupCallHandler.connectToNewUser(data);
+  });
 
-  // socket.on("group-call-user-left", (data) => {
-  //   webRTCGroupCallHandler.removeInactiveStream(data);
-  // });
+  socket.on("group-call-user-left", (data) => {
+    webRTCGroupCallHandler.removeInactiveStream(data);
+  });
 };
 
 export const registerNewUser = (username) => {
@@ -90,6 +95,23 @@ export const sendUserHangedUp = (data) => {
   socket.emit("user-hanged-up", data);
 };
 
+// emitting events related with group calls
+export const registerGroupCall = (data) => {
+  socket.emit("group-call-register", data);
+};
+
+export const userWantsToJoinGroupCall = (data) => {
+  socket.emit("group-call-join-request", data);
+};
+
+export const userLeftGroupCall = (data) => {
+  socket.emit("group-call-user-left", data);
+};
+
+export const groupCallClosedByHost = (data) => {
+  socket.emit("group-call-closed-by-host", data);
+};
+
 const handleBroadcastEvents = (data) => {
   switch (data.event) {
     case broadcastEventTypes.ACTIVE_USERS:
@@ -99,23 +121,23 @@ const handleBroadcastEvents = (data) => {
       store.dispatch(setActiveUserInitiate(activeUsers));
 
       break;
-    // case broadcastEventTypes.GROUP_CALL_ROOMS:
-    //   const groupCallRooms = data.groupCallRooms.filter(
-    //     (room) => room.socketId !== socket.id
-    //   );
-    //   const activeGroupCallRoomId =
-    //     webRTCGroupCallHandler.checkActiveGroupCall();
+    case broadcastEventTypes.GROUP_CALL_ROOMS:
+      const groupCallRooms = data.groupCallRooms.filter(
+        (room) => room.socketId !== socket.id
+      );
+      const activeGroupCallRoomId =
+        webRTCGroupCallHandler.checkActiveGroupCall();
 
-    //   if (activeGroupCallRoomId) {
-    //     const room = groupCallRooms.find(
-    //       (room) => room.roomId === activeGroupCallRoomId
-    //     );
-    //     if (!room) {
-    //       webRTCGroupCallHandler.clearGroupData();
-    //     }
-    //   }
-    //   store.dispatch(dashboardActions.setGroupCalls(groupCallRooms));
-    //   break;
+      if (activeGroupCallRoomId) {
+        const room = groupCallRooms.find(
+          (room) => room.roomId === activeGroupCallRoomId
+        );
+        if (!room) {
+          webRTCGroupCallHandler.clearGroupData();
+        }
+      }
+      store.dispatch(setGroupCallRoomInitiate(groupCallRooms));
+      break;
     default:
       break;
   }

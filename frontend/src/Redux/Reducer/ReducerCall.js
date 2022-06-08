@@ -34,6 +34,7 @@ const CallReducer = (state = initialState, action) => {
     case types.CALL_SET_LOCAL_CAMERA_ENABLED_START:
     case types.CALL_SET_LOCAL_MICROPHONE_ENABLED_START:
     case types.CALL_SET_SCREEN_SHARING_ACTIVE_START:
+    case types.CALL_SET_GROUP_CALL_STREAMS_START:
       return {
         ...state,
         loading: true,
@@ -56,6 +57,7 @@ const CallReducer = (state = initialState, action) => {
         loading: false,
         callerUsername: action.payload,
       };
+
     case types.CALL_SET_CALLING_DIALOG_VISIBLE_SUCCESS:
       return {
         ...state,
@@ -74,6 +76,16 @@ const CallReducer = (state = initialState, action) => {
         loading: false,
         remoteStream: action.payload,
       };
+    //todo:Group
+
+    case types.CALL_SET_GROUP_CALL_STREAMS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        groupCallStreams: action.payload,
+      };
+
+    //Todo: Share
     case types.CALL_SET_LOCAL_CAMERA_ENABLED_SUCCESS:
       return {
         ...state,
@@ -116,6 +128,7 @@ const CallReducer = (state = initialState, action) => {
     case types.CALL_SET_LOCAL_CAMERA_ENABLED_FAIL:
     case types.CALL_SET_LOCAL_MICROPHONE_ENABLED_FAIL:
     case types.CALL_SET_SCREEN_SHARING_ACTIVE_FAIL:
+    case types.CALL_SET_GROUP_CALL_STREAMS_FAIL:
       return {
         ...state,
         loading: false,

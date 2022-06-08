@@ -56,16 +56,17 @@ export const setActiveUserInitiate = (activeUsers) => async (dispatch) => {
     dispatch(setActiveUserFail(error));
   }
 };
-//! Set Group Call Room
-export const setGroupCallRoomInitiate = (username) => async (dispatch) => {
-  try {
-    dispatch(setGroupCallRoomStart());
+//! Go home Group Call Room
+export const setGroupCallRoomInitiate =
+  (groupCallRooms) => async (dispatch) => {
+    try {
+      dispatch(setGroupCallRoomStart());
 
-    dispatch(setGroupCallRoomSuccess(username));
-  } catch (error) {
-    dispatch(setGroupCallRoomFail(error));
-  }
-};
+      dispatch(setGroupCallRoomSuccess(groupCallRooms));
+    } catch (error) {
+      dispatch(setGroupCallRoomFail(error));
+    }
+  };
 
 //!CLEAR_ERRORS
 export const clearErrors = () => async (dispatch) => {

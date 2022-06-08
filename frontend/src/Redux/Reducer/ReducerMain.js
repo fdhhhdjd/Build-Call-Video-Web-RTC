@@ -10,6 +10,7 @@ const MainReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.DASHBOARD_SET_USERNAME_START:
     case types.DASHBOARD_SET_ACTIVE_USERS_START:
+    case types.DASHBOARD_SET_GROUP_CALL_ROOMS_START:
       return {
         ...state,
         loading: true,
@@ -26,12 +27,20 @@ const MainReducer = (state = initialState, action) => {
         loading: false,
         activeUsers: action.payload,
       };
+    //todo: Group
+    case types.DASHBOARD_SET_GROUP_CALL_ROOMS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        groupCallRooms: action.payload,
+      };
     case types.CLEAR_ERRORS_SUCCESS:
       return {
         ...state,
       };
     case types.DASHBOARD_SET_USERNAME_FAIL:
     case types.DASHBOARD_SET_ACTIVE_USERS_FAIL:
+    case types.DASHBOARD_SET_GROUP_CALL_ROOMS_FAIL:
       return {
         ...state,
         loading: false,

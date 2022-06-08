@@ -83,6 +83,8 @@ export const setRemoteStreamFail = (error) => ({
   type: types.CALL_SET_REMOTE_STREAM_FAIL,
   payload: error,
 });
+
+//*Todo Share Group and Private
 //?CALL_SET_SCREEN_SHARING_ACTIVE
 export const setScreenSharingActiveStart = () => ({
   type: types.CALL_SET_SCREEN_SHARING_ACTIVE_START,
@@ -119,6 +121,56 @@ export const setMicrophoneEnabledFail = (error) => ({
   type: types.CALL_SET_LOCAL_MICROPHONE_ENABLED_FAIL,
   payload: error,
 });
+//*todo: Group
+//?CALL_SET_GROUP_CALL_ACTIVE
+export const setGroupCallActiveStart = () => ({
+  type: types.CALL_SET_GROUP_CALL_ACTIVE_START,
+});
+export const setGroupCallActiveSuccess = (apis) => ({
+  type: types.CALL_SET_GROUP_CALL_ACTIVE_SUCCESS,
+  payload: apis,
+});
+export const setGroupCallActiveFail = (error) => ({
+  type: types.CALL_SET_GROUP_CALL_ACTIVE_FAIL,
+  payload: error,
+});
+//?CALL_SET_GROUP_CALL_STREAMS
+export const setGroupCallIncomingStreamsStart = () => ({
+  type: types.CALL_SET_GROUP_CALL_STREAMS_START,
+});
+export const setGroupCallIncomingStreamsSuccess = (apis) => ({
+  type: types.CALL_SET_GROUP_CALL_STREAMS_SUCCESS,
+  payload: apis,
+});
+export const setGroupCallIncomingStreamsFail = (error) => ({
+  type: types.CALL_SET_GROUP_CALL_STREAMS_FAIL,
+  payload: error,
+});
+//*todo:Group
+//?CALL_SET_GROUP_CALL_ACTIVE
+export const setGroupCallActiveInitiate =
+  ({ call }) =>
+  async (dispatch) => {
+    try {
+      dispatch(setGroupCallActiveStart());
+
+      dispatch(setGroupCallActiveSuccess(call));
+    } catch (error) {
+      dispatch(setGroupCallActiveFail(error));
+    }
+  };
+//?CALL_SET_GROUP_CALL_STREAMS
+export const setGroupCallIncomingStreamsInitiate =
+  (call) => async (dispatch) => {
+    try {
+      dispatch(setGroupCallIncomingStreamsStart());
+
+      dispatch(setGroupCallIncomingStreamsSuccess(call));
+    } catch (error) {
+      dispatch(setGroupCallIncomingStreamsFail(error));
+    }
+  };
+
 //! Set local Stream
 export const setLocalStreamInitiate = (stream) => async (dispatch) => {
   try {
@@ -187,7 +239,6 @@ export const setCallRejectedInitiate =
   };
 //!video
 export const setRemoteStreamInitiate = (remoteStream) => async (dispatch) => {
-  console.log(remoteStream, "----take-----");
   try {
     dispatch(setRemoteStreamStart());
 
