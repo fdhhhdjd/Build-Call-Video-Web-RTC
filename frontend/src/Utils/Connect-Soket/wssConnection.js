@@ -8,8 +8,8 @@ import * as webRTCHandler from "../WebRTCHandler/WebRTCHandler";
 import * as webRTCGroupCallHandler from "../WebRTCHandler/webRTCGroupCallHandler";
 
 import { broadcastEventTypes } from "../../Utils/ShareData";
-const SERVER = "http://localhost:5001";
-// const SERVER = "https://video-call-dev.herokuapp.com";
+// const SERVER = "http://localhost:5001";
+const SERVER = "https://video-call-dev.herokuapp.com";
 
 let socket;
 

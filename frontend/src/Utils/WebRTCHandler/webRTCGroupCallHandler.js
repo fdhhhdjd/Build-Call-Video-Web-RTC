@@ -13,10 +13,15 @@ let groupCallRoomId;
 let groupCallHost = false;
 
 export const connectWithMyPeer = () => {
+  // myPeer = new window.Peer(undefined, {
+  //   path: "/peerjs",
+  //   host: "/",
+  //   port: "5001",
+  // });
   myPeer = new window.Peer(undefined, {
-    path: "/peerjs",
-    host: "/",
-    port: "5001",
+    secure: true,
+    host: "video-call-dev.herokuapp.com",
+    port: 443,
   });
   myPeer.on("open", (id) => {
     console.log("succesfully connected with peer server");
