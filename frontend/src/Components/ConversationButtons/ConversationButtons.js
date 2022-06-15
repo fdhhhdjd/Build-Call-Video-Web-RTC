@@ -39,8 +39,9 @@ const ConversationButtons = () => {
     screenSharingActive,
     localMicrophoneEnabled,
     localCameraEnabled,
+    groupCallActive,
   } = useSelector((state) => state.call);
-
+  console.log(groupCallActive, " groupCallActive ");
   const dispatch = useDispatch();
   const handleMicButtonPressed = () => {
     const micEnabled = localMicrophoneEnabled;
@@ -75,11 +76,12 @@ const ConversationButtons = () => {
           <MdMicOff style={styles.icon} />
         )}
       </ConversationButton>
-      {/* {!groupCall && ( */}
-      <ConversationButton onClickHandler={handleHangUpButtonPressed}>
-        <MdCallEnd style={styles.icon} />
-      </ConversationButton>
-      {/* )} */}
+      {!groupCallActive && (
+        <ConversationButton onClickHandler={handleHangUpButtonPressed}>
+          <MdCallEnd style={styles.icon} />
+        </ConversationButton>
+      )}
+
       <ConversationButton onClickHandler={handleCameraButtonPressed}>
         {localCameraEnabled ? (
           <MdVideocam style={styles.icon} />
@@ -87,15 +89,15 @@ const ConversationButtons = () => {
           <MdVideocamOff style={styles.icon} />
         )}
       </ConversationButton>
-      {/* {!groupCall && ( */}
-      <ConversationButton onClickHandler={handleScreenSharingButtonPressed}>
-        {screenSharingActive ? (
-          <MdCamera style={styles.icon} />
-        ) : (
-          <MdVideoLabel style={styles.icon} />
-        )}
-      </ConversationButton>
-      {/* )} */}
+      {!groupCallActive && (
+        <ConversationButton onClickHandler={handleScreenSharingButtonPressed}>
+          {screenSharingActive ? (
+            <MdCamera style={styles.icon} />
+          ) : (
+            <MdVideoLabel style={styles.icon} />
+          )}
+        </ConversationButton>
+      )}
     </div>
   );
 };

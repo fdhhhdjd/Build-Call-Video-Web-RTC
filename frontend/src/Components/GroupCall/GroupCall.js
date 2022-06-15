@@ -1,22 +1,20 @@
-import React from "react";
 import { useSelector } from "react-redux";
 import { callStates } from "../../Utils/ShareData";
+import * as webRTCGroupCallHandler from "../../Utils/WebRTCHandler/webRTCGroupCallHandler";
 import GroupCallButton from "../GroupCallButton/GroupCallButton";
 import GroupCallRoom from "../GroupCallRoom/GroupCallRoom";
-import * as webRTCGroupCallHandler from "../../Utils/WebRTCHandler/webRTCGroupCallHandler";
 
 const GroupCall = () => {
-  const { callState, localStream, groupCallActive, groupCallStreams } =
-    useSelector((state) => state.call);
-
+  const { callState, localStream, groupCallActive } = useSelector(
+    (state) => state.call
+  );
   const createRoom = () => {
     webRTCGroupCallHandler.createNewGroupCall();
   };
 
   const leaveRoom = () => {
-    // webRTCGroupCallHandler.leaveGroupCall();
+    webRTCGroupCallHandler.leaveGroupCall();
   };
-  console.log(groupCallActive, "groupCallActive");
   return (
     <>
       {!groupCallActive &&

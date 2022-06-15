@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { GroupCallVideo } from "../../Imports/Index";
+import { ConversationButtons, GroupCallVideo } from "../../Imports/Index";
 const GroupCallRoom = () => {
   const { groupCallStreams } = useSelector((state) => state.call);
   console.log(groupCallStreams, "-----aloo-----");
@@ -13,7 +13,7 @@ const GroupCallRoom = () => {
             return <GroupCallVideo key={stream.id} stream={stream} />;
           })}
         </div>
-        {/* <ConversationButtons {...props} groupCall /> */}
+        <ConversationButtons />
       </div>
     </React.Fragment>
   );

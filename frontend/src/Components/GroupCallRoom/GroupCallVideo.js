@@ -12,7 +12,6 @@ const styles = {
 };
 
 const GroupCallVideo = ({ stream }) => {
-  console.log(stream, "stream");
   const videoRef = useRef();
 
   useEffect(() => {

@@ -83,6 +83,18 @@ export const setRemoteStreamFail = (error) => ({
   type: types.CALL_SET_REMOTE_STREAM_FAIL,
   payload: error,
 });
+//?CALL_SET_CHAT_MESSAGE
+export const setMessageStart = () => ({
+  type: types.CALL_SET_CHAT_MESSAGE_START,
+});
+export const setMessageSuccess = (apis) => ({
+  type: types.CALL_SET_CHAT_MESSAGE_SUCCESS,
+  payload: apis,
+});
+export const setMessageFail = (error) => ({
+  type: types.CALL_SET_CHAT_MESSAGE_FAIL,
+  payload: error,
+});
 
 //*Todo Share Group and Private
 //?CALL_SET_SCREEN_SHARING_ACTIVE
@@ -144,6 +156,18 @@ export const setGroupCallIncomingStreamsSuccess = (apis) => ({
 });
 export const setGroupCallIncomingStreamsFail = (error) => ({
   type: types.CALL_SET_GROUP_CALL_STREAMS_FAIL,
+  payload: error,
+});
+//?CALL_CLEAR_GROUP_CALL_DATA
+export const clearGroupCallDataStart = () => ({
+  type: types.CALL_CLEAR_GROUP_CALL_DATA_START,
+});
+export const clearGroupCallDataSuccess = (apis) => ({
+  type: types.CALL_CLEAR_GROUP_CALL_DATA_SUCCESS,
+  payload: apis,
+});
+export const clearGroupCallDataFail = (error) => ({
+  type: types.CALL_CLEAR_GROUP_CALL_DATA_FAIL,
   payload: error,
 });
 //*todo:Group
@@ -237,6 +261,17 @@ export const setCallRejectedInitiate =
       dispatch(setCallRejectedFail(error));
     }
   };
+export const setMessageInitiate =
+  ({ messageReceived, messageContent }) =>
+  async (dispatch) => {
+    try {
+      dispatch(setMessageStart());
+
+      dispatch(setMessageSuccess({ messageReceived, messageContent }));
+    } catch (error) {
+      dispatch(setMessageFail(error));
+    }
+  };
 //!video
 export const setRemoteStreamInitiate = (remoteStream) => async (dispatch) => {
   try {
@@ -283,6 +318,16 @@ export const setMicrophoneEnabledInitiate =
       dispatch(setMicrophoneEnabledFail(error));
     }
   };
+//! Leave Group CLear
+export const clearGroupCallDataInitiate = () => async (dispatch) => {
+  try {
+    dispatch(clearGroupCallDataStart());
+
+    dispatch(clearGroupCallDataSuccess());
+  } catch (error) {
+    dispatch(clearGroupCallDataFail(error));
+  }
+};
 
 //!CLEAR_ERRORS
 export const clearErrors = () => async (dispatch) => {

@@ -1,16 +1,12 @@
 import * as wss from "../Connect-Soket/wssConnection";
 import store from "../../Redux/Store";
 import {
+  clearGroupCallDataInitiate,
   setCallStateInitiate,
   setGroupCallActiveInitiate,
   setGroupCallIncomingStreamsInitiate,
 } from "../../Redux/Action/ActionCall";
-import {
-  preOfferAnswers,
-  defaultConstrains,
-  configuration,
-  callStates,
-} from "../ShareData";
+import { callStates } from "../ShareData";
 let myPeer;
 let myPeerId;
 let groupCallRoomId;
@@ -78,35 +74,35 @@ export const connectToNewUser = (data) => {
 };
 
 export const leaveGroupCall = () => {
-  //   if (groupCallHost) {
-  //     wss.groupCallClosedByHost({
-  //       peerId: myPeerId,
-  //     });
-  //   } else {
-  //     wss.userLeftGroupCall({
-  //       streamId: store.getState().call.localStream.id,
-  //       roomId: groupCallRoomId,
-  //     });
-  //   }
-  //   clearGroupData();
+  if (groupCallHost) {
+    wss.groupCallClosedByHost({
+      peerId: myPeerId,
+    });
+  } else {
+    wss.userLeftGroupCall({
+      streamId: store.getState().call.localStream.id,
+      roomId: groupCallRoomId,
+    });
+  }
+  clearGroupData();
 };
 
 export const clearGroupData = () => {
-  //   groupCallRoomId = null;
-  //   groupCallHost = null;
-  //   store.dispatch(clearGroupCallData());
-  //   myPeer.destroy();
-  //   connectWithMyPeer();
-  //   const localStream = store.getState().call.localStream;
-  //   localStream.getVideoTracks()[0].enabled = true;
-  //   localStream.getAudioTracks()[0].enabled = true;
+  groupCallRoomId = null;
+  groupCallHost = null;
+  store.dispatch(clearGroupCallDataInitiate());
+  myPeer.destroy();
+  connectWithMyPeer();
+  const localStream = store.getState().call.localStream;
+  localStream.getVideoTracks()[0].enabled = true;
+  localStream.getAudioTracks()[0].enabled = true;
 };
 
 export const removeInactiveStream = (data) => {
-  //   const groupCallStreams = store
-  //     .getState()
-  //     .call.groupCallStreams.filter((stream) => stream.id !== data.streamId);
-  //   store.dispatch(setGroupCallIncomingStreams(groupCallStreams));
+  const groupCallStreams = store
+    .getState()
+    .call.groupCallStreams.filter((stream) => stream.id !== data.streamId);
+  store.dispatch(setGroupCallIncomingStreamsInitiate(groupCallStreams));
 };
 
 const addVideoStream = (incomingStream) => {
@@ -119,9 +115,9 @@ const addVideoStream = (incomingStream) => {
 
 // if group call is active return roomId if not return false
 export const checkActiveGroupCall = () => {
-  //   if (store.getState().call.groupCallActive) {
-  //     return groupCallRoomId;
-  //   } else {
-  //     return false;
-  //   }
+  if (store.getState().call.groupCallActive) {
+    return groupCallRoomId;
+  } else {
+    return false;
+  }
 };

@@ -21,3 +21,4 @@ export { default as ActiveUsersList } from "../Components/ActiveUsersList/Active
 export { default as ActiveUsersListItem } from "../Components/ActiveUsersList/ActiveUsersListItem";
 export { default as GroupCallRoomsListItem } from "../Components/GroupCallRoomsList/GroupCallRoomsListItem";
 export { default as GroupCallVideo } from "../Components/GroupCallRoom/GroupCallVideo";
+export { default as MessageDisplayer } from "../Components/Messenger/MessageDisplayer";

@@ -5,6 +5,7 @@ import {
   setCallRejectedInitiate,
   setCallStateInitiate,
   setLocalStreamInitiate,
+  setMessageInitiate,
   setRemoteStreamInitiate,
   setScreenSharingActiveInitiate,
 } from "../../Redux/Action/ActionCall";
@@ -58,9 +59,14 @@ const createPeerConnection = () => {
       console.log("peer connection is ready to receive data channel messages");
     };
 
-    // dataChannel.onmessage = (event) => {
-    //   store.dispatch(setMessage(true, event.data));
-    // };
+    dataChannel.onmessage = (event) => {
+      store.dispatch(
+        setMessageInitiate({
+          messageReceived: true,
+          messageContent: event.data,
+        })
+      );
+    };
   };
 
   dataChannel = peerConnection.createDataChannel("chat");
@@ -180,7 +186,6 @@ export const hangUp = () => {
   wss.sendUserHangedUp({
     connectedUserSocketId: connectedUserSocketId,
   });
-  console.log("hangup----");
   resetCallDataAfterHangUp();
 };
 export const handleUserHangedUp = () => {
@@ -259,4 +264,7 @@ const resetCallDataAfterHangUp = () => {
   }
 
   store.dispatch(resetCallDataStateInitiate());
+};
+export const sendMessageUsingDataChannel = (message) => {
+  dataChannel.send(message);
 };

@@ -35,6 +35,9 @@ const CallReducer = (state = initialState, action) => {
     case types.CALL_SET_LOCAL_MICROPHONE_ENABLED_START:
     case types.CALL_SET_SCREEN_SHARING_ACTIVE_START:
     case types.CALL_SET_GROUP_CALL_STREAMS_START:
+    case types.CALL_SET_GROUP_CALL_ACTIVE_START:
+    case types.CALL_CLEAR_GROUP_CALL_DATA_START:
+    case types.CALL_SET_CHAT_MESSAGE_START:
       return {
         ...state,
         loading: true,
@@ -76,6 +79,12 @@ const CallReducer = (state = initialState, action) => {
         loading: false,
         remoteStream: action.payload,
       };
+    case types.CALL_SET_CHAT_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
     //todo:Group
 
     case types.CALL_SET_GROUP_CALL_STREAMS_SUCCESS:
@@ -83,6 +92,23 @@ const CallReducer = (state = initialState, action) => {
         ...state,
         loading: false,
         groupCallStreams: action.payload,
+      };
+
+    case types.CALL_SET_GROUP_CALL_ACTIVE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        groupCallActive: action.payload,
+      };
+    case types.CALL_CLEAR_GROUP_CALL_DATA_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        groupCallActive: false,
+        groupCallStreams: [],
+        callState: callStates.CALL_AVAILABLE,
+        localMicrophoneEnabled: true,
+        localCameraEnabled: true,
       };
 
     //Todo: Share
@@ -129,6 +155,9 @@ const CallReducer = (state = initialState, action) => {
     case types.CALL_SET_LOCAL_MICROPHONE_ENABLED_FAIL:
     case types.CALL_SET_SCREEN_SHARING_ACTIVE_FAIL:
     case types.CALL_SET_GROUP_CALL_STREAMS_FAIL:
+    case types.CALL_SET_GROUP_CALL_ACTIVE_FAIL:
+    case types.CALL_CLEAR_GROUP_CALL_DATA_FAIL:
+    case types.CALL_SET_CHAT_MESSAGE_FAIL:
       return {
         ...state,
         loading: false,
