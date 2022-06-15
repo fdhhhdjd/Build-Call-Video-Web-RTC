@@ -3,6 +3,7 @@ const socket = require("socket.io");
 const { ExpressPeerServer } = require("peer");
 const dotenv = require("dotenv");
 const { v4: uuidv4 } = require("uuid");
+const path = require("path");
 dotenv.config({ path: ".env" });
 
 const app = express();
@@ -164,4 +165,9 @@ io.on("connection", (socket) => {
       groupCallRooms,
     });
   });
+});
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
 });
