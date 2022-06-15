@@ -19,9 +19,10 @@ export const connectWithMyPeer = () => {
   //   port: "5001",
   // });
   myPeer = new window.Peer(undefined, {
+    host: process.env.REACT_APP_MY_PEER,
+    port: process.env.REACT_APP_PORT,
+    path: "/peerjs",
     secure: true,
-    host: "video-call-dev.herokuapp.com",
-    port: 443,
   });
   myPeer.on("open", (id) => {
     console.log("succesfully connected with peer server");
