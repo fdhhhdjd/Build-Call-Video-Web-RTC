@@ -1,4 +1,4 @@
-## Note : Làm về Logic FE and BE (Giao Diện không thiết kế nhiều mọi người thông cảm) ^-^
+## Note : Làm về Logic FE and BE (Giao Diện không thiết kế nhiều mọi người thông cảm ^-^ ) 
 
 # BackEnd Code By: Nguyễn Tiến Tài
 
