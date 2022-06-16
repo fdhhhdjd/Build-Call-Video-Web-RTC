@@ -1,3 +1,5 @@
+## Note ---> Làm về Logic FE and BE (Giao Diện không thiết kế nhiều mọi người thông cảm) ^-^
+
 # BackEnd Code By: Nguyễn Tiến Tài
 
 ## WebSite: https://video-call-dev.herokuapp.com
