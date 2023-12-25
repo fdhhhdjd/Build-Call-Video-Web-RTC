@@ -16,10 +16,8 @@ const authSlice = createSlice({
       state.username = action.payload;
     },
     setActiveUsers: (state, action) => {
-      state.activeUsers = action.activeUsers;
-    },
-    setGroupCalls: (state, action) => {
-      state.groupCallRooms = action.groupCallRooms;
+      console.log(action);
+      state.activeUsers = action.payload;
     },
   },
 });

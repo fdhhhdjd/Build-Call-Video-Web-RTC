@@ -11,6 +11,11 @@ const preOfferAnswers = {
   CALL_NOT_AVAILABLE: "CALL_NOT_AVAILABLE",
 };
 
+const broadcastEventTypes = {
+  ACTIVE_USERS: "ACTIVE_USERS",
+  GROUP_CALL_ROOMS: "GROUP_CALL_ROOMS",
+};
+
 const defaultConstrains = {
   video: {
     width: 480,
@@ -27,4 +32,14 @@ const configuration = {
   ],
 };
 
-export { callStates, preOfferAnswers, defaultConstrains, configuration };
+const imageDeFault =
+  "https://robohash.org/620050a4db5104ba23238cd75171d63c2?gravatar=hashed";
+
+export {
+  callStates,
+  preOfferAnswers,
+  defaultConstrains,
+  configuration,
+  broadcastEventTypes,
+  imageDeFault,
+};

@@ -10,12 +10,7 @@ const randomIconAvatar = async () => {
 
     const response = await fetch(apiUrl);
 
-    if (response.ok) {
-      const data = await response.json();
-      return data;
-    } else {
-      throw new Error(response.status);
-    }
+    return response.url;
   } catch (error) {
     throw new Error(error);
   }
