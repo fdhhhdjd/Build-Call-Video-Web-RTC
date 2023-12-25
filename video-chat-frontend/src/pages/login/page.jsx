@@ -2,7 +2,7 @@
 import React from "react";
 
 //* IMPORT
-import SectionLogin from "../../components/secctionLogin/SectionLogin";
+import SectionLogin from "../../components/sectionLogin/SectionLogin";
 
 const LoginPage = () => {
   return (

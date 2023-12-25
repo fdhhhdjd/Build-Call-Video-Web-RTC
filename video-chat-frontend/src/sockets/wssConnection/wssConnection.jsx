@@ -1,3 +1,4 @@
+//* LIB
 import socketClient from "socket.io-client";
 
 const SERVER = process.env.SERVER_SOCKET;
@@ -7,7 +8,7 @@ export const connectWithWebSocket = () => {
   socket = socketClient(SERVER);
 
   socket.on("connection", () => {
-    console.log("succesfully connected with wss server");
+    console.log("Successfully connected with wss server ✅");
     console.log(socket.id);
   });
   socket.on("error", (error) => {

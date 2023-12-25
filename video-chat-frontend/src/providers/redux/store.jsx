@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 //* LIB
 import { configureStore } from "@reduxjs/toolkit";
 import loggerMiddleware from "redux-logger";
@@ -17,6 +16,8 @@ export const store = configureStore({
     auth: AuthSlice,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middlewares),
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }).concat(middlewares),
   devTools: true,
 });

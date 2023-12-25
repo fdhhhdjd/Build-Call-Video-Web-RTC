@@ -2,7 +2,7 @@
 import React from "react";
 
 //* IMPORT
-import { connectWithWebSocket } from "./common/utils/wssConnection";
+import { connectWithWebSocket } from "./sockets/wssConnection/wssConnection";
 
 const App = () => {
   React.useEffect(() => {

@@ -33,7 +33,14 @@ const callSlice = createSlice({
   initialState,
   //* Reducers react to action types created by the current 'slice.'
   //* Ex: total is included in the user slice, so we will add increment action to reducers
-  reducers: {},
+  reducers: {
+    setLocalStream: (state, action) => {
+      state.localStream = action.payload;
+    },
+    setCallState: (state, action) => {
+      state.callState = action.payload;
+    },
+  },
 });
 // Todo: 1. Reducer
 const callReducer = callSlice.reducer;
@@ -42,6 +49,6 @@ const callReducer = callSlice.reducer;
 const callAction = callSlice.actions;
 
 // Todo: 3 Export action
-export const {} = callAction;
+export const { setLocalStream, setCallState } = callAction;
 
 export default callReducer;

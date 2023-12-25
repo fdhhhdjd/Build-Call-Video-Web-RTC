@@ -7,11 +7,12 @@ import logo from "../../assets/logo.png";
 import UsernameInput from "./UsernameInput";
 import SubmitButton from "./SubmitButton";
 import { useNavigate } from "react-router-dom";
-import { registerNewUser } from "../../common/utils/wssConnection";
+import { registerNewUser } from "../../sockets/wssConnection";
 import { setUsername } from "../../providers/redux/auth/slice";
 
 const SectionLogin = () => {
   const [input, setInput] = React.useState("");
+
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const SectionLogin = () => {
     dispatch(setUsername(input));
     navigate("/dashboard");
   };
+
   return (
     <div className="login-page_container background_main_color">
       <div className="login-page_login_box background_secondary_color">
