@@ -1,42 +1,13 @@
-const express = require("express");
-const socket = require("socket.io");
-const { ExpressPeerServer } = require("peer");
-const dotenv = require("dotenv");
+//* LIB
 const { v4: uuidv4 } = require("uuid");
-const path = require("path");
-dotenv.config({ path: ".env" });
 
-const app = express();
-if (process.env.NODE_ENV !== "PRODUCTION") {
-  require("dotenv").config({ path: ".env" });
-}
-
-const PORT = process.env.PORT || 5001;
-const server = app.listen(PORT, () =>
-  console.log(`server is listening on port:http://localhost:${PORT}`)
-);
-const peerServer = ExpressPeerServer(server, {
-  debug: true,
-});
-
-app.use("/peerjs", peerServer);
-
-const io = socket(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
+//* IMPORT
+const broadcastEventTypes = require("../constants");
 
 let peers = [];
 let groupCallRooms = [];
 
-const broadcastEventTypes = {
-  ACTIVE_USERS: "ACTIVE_USERS",
-  GROUP_CALL_ROOMS: "GROUP_CALL_ROOMS",
-};
-
-io.on("connection", (socket) => {
+global.io.on("connection", (socket) => {
   socket.emit("connection", null);
   console.log("new user connected");
   console.log(socket.id);
@@ -49,12 +20,12 @@ io.on("connection", (socket) => {
     console.log("registered new user");
     console.log(peers);
 
-    io.sockets.emit("broadcast", {
+    global.io.sockets.emit("broadcast", {
       event: broadcastEventTypes.ACTIVE_USERS,
       activeUsers: peers,
     });
 
-    io.sockets.emit("broadcast", {
+    global.io.sockets.emit("broadcast", {
       event: broadcastEventTypes.GROUP_CALL_ROOMS,
       groupCallRooms,
     });
@@ -63,7 +34,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("user disconnected");
     peers = peers.filter((peer) => peer.socketId !== socket.id);
-    io.sockets.emit("broadcast", {
+    global.io.sockets.emit("broadcast", {
       event: broadcastEventTypes.ACTIVE_USERS,
       activeUsers: peers,
     });
@@ -71,17 +42,16 @@ io.on("connection", (socket) => {
     groupCallRooms = groupCallRooms.filter(
       (room) => room.socketId !== socket.id
     );
-    io.sockets.emit("broadcast", {
+    global.io.sockets.emit("broadcast", {
       event: broadcastEventTypes.GROUP_CALL_ROOMS,
       groupCallRooms,
     });
   });
 
   // listeners related with direct call
-
   socket.on("pre-offer", (data) => {
     console.log("pre-offer handled");
-    io.to(data.callee.socketId).emit("pre-offer", {
+    global.io.to(data.callee.socketId).emit("pre-offer", {
       callerUsername: data.caller.username,
       callerSocketId: socket.id,
     });
@@ -89,34 +59,34 @@ io.on("connection", (socket) => {
 
   socket.on("pre-offer-answer", (data) => {
     console.log("handling pre offer answer");
-    io.to(data.callerSocketId).emit("pre-offer-answer", {
+    global.io.to(data.callerSocketId).emit("pre-offer-answer", {
       answer: data.answer,
     });
   });
 
   socket.on("webRTC-offer", (data) => {
     console.log("handling webRTC offer");
-    io.to(data.calleeSocketId).emit("webRTC-offer", {
+    global.io.to(data.calleeSocketId).emit("webRTC-offer", {
       offer: data.offer,
     });
   });
 
   socket.on("webRTC-answer", (data) => {
     console.log("handling webRTC answer");
-    io.to(data.callerSocketId).emit("webRTC-answer", {
+    global.io.to(data.callerSocketId).emit("webRTC-answer", {
       answer: data.answer,
     });
   });
 
   socket.on("webRTC-candidate", (data) => {
     console.log("handling ice candidate");
-    io.to(data.connectedUserSocketId).emit("webRTC-candidate", {
+    global.io.to(data.connectedUserSocketId).emit("webRTC-candidate", {
       candidate: data.candidate,
     });
   });
 
   socket.on("user-hanged-up", (data) => {
-    io.to(data.connectedUserSocketId).emit("user-hanged-up");
+    global.io.to(data.connectedUserSocketId).emit("user-hanged-up");
   });
 
   // listeners related with group call
@@ -132,14 +102,14 @@ io.on("connection", (socket) => {
     };
 
     groupCallRooms.push(newGroupCallRoom);
-    io.sockets.emit("broadcast", {
+    global.io.sockets.emit("broadcast", {
       event: broadcastEventTypes.GROUP_CALL_ROOMS,
       groupCallRooms,
     });
   });
 
   socket.on("group-call-join-request", (data) => {
-    io.to(data.roomId).emit("group-call-join-request", {
+    global.io.to(data.roomId).emit("group-call-join-request", {
       peerId: data.peerId,
       streamId: data.streamId,
     });
@@ -150,7 +120,7 @@ io.on("connection", (socket) => {
   socket.on("group-call-user-left", (data) => {
     socket.leave(data.roomId);
 
-    io.to(data.roomId).emit("group-call-user-left", {
+    global.io.to(data.roomId).emit("group-call-user-left", {
       streamId: data.streamId,
     });
   });
@@ -160,14 +130,9 @@ io.on("connection", (socket) => {
       (room) => room.peerId !== data.peerId
     );
 
-    io.sockets.emit("broadcast", {
+    global.io.sockets.emit("broadcast", {
       event: broadcastEventTypes.GROUP_CALL_ROOMS,
       groupCallRooms,
     });
   });
-});
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-app.get("*", (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/build/index.html"));
 });
