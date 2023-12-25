@@ -1,14 +1,18 @@
 //* LIB
 import React from "react";
+import { useDispatch } from "react-redux";
 
 //* IMPORT
 import { randomIconAvatar } from "../../../common/utils";
 import { imageDeFault } from "../../../common/constants";
+import { callToOtherUser } from "../../../sockets/webRTC/webRTCHandler";
 
 const ActiveUsersListItem = ({ activeUser }) => {
   const [avatar, setAvatar] = React.useState(imageDeFault);
 
-  const handleListItemPressed = () => {};
+  const handleListItemPressed = () => {
+    callToOtherUser(activeUser);
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -26,7 +30,9 @@ const ActiveUsersListItem = ({ activeUser }) => {
       <div className="active_user_list_image_container">
         <img className="active_user_list_image" src={avatar} alt="user image" />
       </div>
-      <span className="active_user_list_text">{activeUser.username}</span>
+      <span className="active_user_list_text">
+        {activeUser.username || "Anonymous"}
+      </span>
     </div>
   );
 };

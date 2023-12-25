@@ -16,7 +16,6 @@ const authSlice = createSlice({
       state.username = action.payload;
     },
     setActiveUsers: (state, action) => {
-      console.log(action);
       state.activeUsers = action.payload;
     },
   },

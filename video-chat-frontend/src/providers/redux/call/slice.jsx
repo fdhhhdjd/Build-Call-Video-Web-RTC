@@ -40,6 +40,12 @@ const callSlice = createSlice({
     setCallState: (state, action) => {
       state.callState = action.payload;
     },
+    setCallingDialogVisible: (state, action) => {
+      state.callingDialogVisible = action.payload;
+    },
+    setCallerUsername: (state, action) => {
+      state.callerUsername = action.payload;
+    },
   },
 });
 // Todo: 1. Reducer
@@ -49,6 +55,11 @@ const callReducer = callSlice.reducer;
 const callAction = callSlice.actions;
 
 // Todo: 3 Export action
-export const { setLocalStream, setCallState } = callAction;
+export const {
+  setLocalStream,
+  setCallState,
+  setCallingDialogVisible,
+  setCallerUsername,
+} = callAction;
 
 export default callReducer;
