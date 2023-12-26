@@ -10,9 +10,10 @@ import useSelectorCall from "../../hooks/useSelectorCall";
 const CallRejectedDialog = () => {
   const { callRejected } = useSelectorCall();
   const dispatch = useDispatch();
+  const timer = React.useRef();
 
   React.useEffect(() => {
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       dispatch(
         setCallRejected({
           rejected: false,
@@ -20,6 +21,10 @@ const CallRejectedDialog = () => {
         })
       );
     }, [_4_SECOND]);
+
+    return () => {
+      clearTimeout(timer.current);
+    };
   }, []);
 
   return (

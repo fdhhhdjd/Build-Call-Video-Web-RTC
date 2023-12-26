@@ -8,7 +8,11 @@ import AuthSlice from "./auth/slice";
 
 const middlewares = [];
 
-middlewares.push(loggerMiddleware);
+const shouldEnvironment = process.env.NODE_APP === "DEV";
+
+if (shouldEnvironment) {
+  middlewares.push(loggerMiddleware);
+}
 
 export const store = configureStore({
   reducer: {
@@ -19,5 +23,5 @@ export const store = configureStore({
     getDefaultMiddleware({
       serializableCheck: false,
     }).concat(middlewares),
-  devTools: true,
+  devTools: shouldEnvironment ? true : false,
 });
