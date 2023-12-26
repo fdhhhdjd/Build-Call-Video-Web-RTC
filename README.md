@@ -7,7 +7,35 @@
 <a href = "mailto:nguyentientai10@gmail.com"><img src="https://img.icons8.com/fluency/48/000000/send-mass-email.png" alt="License"></a>
 </p>
 
-## Project: Call video 
+# Project: Video Call App
+
+## Features
+
+### 1. Video Calls (1 vs 1)
+
+- **Show Online Users:**
+  - Display a list of online users.
+
+- **Initiate Video Call:**
+  - Make video calls between two users.
+  - Play music for the caller during the call.
+
+- **Reject Call:**
+  - Option to reject an incoming call.
+
+- **Auto-Reject Call:**
+  - Automatically reject a call if not answered within 10 seconds.
+
+- **Screen Sharing:**
+  - Share the screen with the caller.
+
+- **Audio and Video Controls:**
+  - Enable/disable microphone.
+  - Enable/disable camera.
+
+- **Chat Feature:**
+  - Chat with the other user during a call.
+
 
 ## Team Word: Liên hệ công việc https://profile-forme.com
 
