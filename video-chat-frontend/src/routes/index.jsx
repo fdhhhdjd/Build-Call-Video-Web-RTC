@@ -9,14 +9,17 @@ import NotFoundPage from "../pages/notfound/page";
 import ErrorPage from "../pages/error";
 import { store } from "../providers/redux/store";
 import App from "../App";
+import CallProvider from "../providers/contexts/CallContext";
 
 const routes = [
   {
     path: "/",
     element: (
       <Provider store={store}>
-        <App />
-        <Outlet />
+        <CallProvider>
+          <App />
+          <Outlet />
+        </CallProvider>
       </Provider>
     ),
     children: [

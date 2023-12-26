@@ -35,6 +35,9 @@ const configuration = {
 const imageDeFault =
   "https://robohash.org/620050a4db5104ba23238cd75171d63c2?gravatar=hashed";
 
+const _4_SECOND = 4 * 1000;
+const _10_SECOND = 10 * 1000;
+
 export {
   callStates,
   preOfferAnswers,
@@ -42,4 +45,6 @@ export {
   configuration,
   broadcastEventTypes,
   imageDeFault,
+  _4_SECOND,
+  _10_SECOND,
 };

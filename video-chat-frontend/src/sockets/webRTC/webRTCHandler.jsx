@@ -6,6 +6,8 @@ import {
   preOfferAnswers,
 } from "../../common/constants";
 import {
+  resetCallDataState,
+  setCallRejected,
   setCallState,
   setCallerUsername,
   setCallingDialogVisible,
@@ -15,6 +17,7 @@ import { store } from "../../providers/redux/store";
 import {
   sendPreOffer,
   sendPreOfferAnswer,
+  sendUserHangedUp,
 } from "../wssConnection/wssConnection";
 
 let connectedUserSocketId;
@@ -76,6 +79,71 @@ export const checkIfCallIsPossible = () => {
   } else {
     return true;
   }
+};
+
+// Todo: 5. Reject a call of caller
+export const rejectIncomingCallRequest = () => {
+  sendPreOfferAnswer({
+    callerSocketId: connectedUserSocketId,
+    answer: preOfferAnswers.CALL_REJECTED,
+  });
+  resetCallData();
+};
+
+// Todo: 6. Reset call video
+export const resetCallData = () => {
+  connectedUserSocketId = null;
+  store.dispatch(setCallState(callStates.CALL_AVAILABLE));
+};
+
+export const handlePreOfferAnswer = (data) => {
+  store.dispatch(setCallingDialogVisible(false));
+
+  if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
+    // sendOffer();
+  } else {
+    let rejectionReason;
+
+    if (data.answer === preOfferAnswers.CALL_NOT_AVAILABLE) {
+      rejectionReason = "Callee is not able to pick up the call right now";
+    } else {
+      rejectionReason = "Call rejected by the callee";
+    }
+    store.dispatch(
+      setCallRejected({
+        rejected: true,
+        reason: rejectionReason,
+      })
+    );
+
+    resetCallData();
+  }
+};
+
+// Todo: 7. Destroy call video form call
+export const hangUp = () => {
+  sendUserHangedUp({
+    connectedUserSocketId: connectedUserSocketId,
+  });
+
+  resetCallDataAfterHangUp();
+};
+
+const resetCallDataAfterHangUp = () => {
+  peerConnection.close();
+  peerConnection = null;
+  createPeerConnection();
+  resetCallData();
+
+  const localStream = store.getState().call.localStream;
+  localStream.getVideoTracks()[0].enabled = true;
+  localStream.getAudioTracks()[0].enabled = true;
+
+  store.dispatch(resetCallDataState());
+};
+
+export const handleUserHangedUp = () => {
+  resetCallDataAfterHangUp();
 };
 
 // Todo: Connect peer

@@ -5,7 +5,11 @@ import socketClient from "socket.io-client";
 import { store } from "../../providers/redux/store";
 import { setActiveUsers } from "../../providers/redux/auth/slice";
 import { broadcastEventTypes } from "../../common/constants";
-import { handlePreOffer } from "../webRTC/webRTCHandler";
+import {
+  handlePreOffer,
+  handlePreOfferAnswer,
+  handleUserHangedUp,
+} from "../webRTC/webRTCHandler";
 
 const SERVER = process.env.SERVER_SOCKET;
 let socket;
@@ -29,6 +33,14 @@ export const connectWithWebSocket = () => {
   socket.on("pre-offer", (data) => {
     handlePreOffer(data);
   });
+
+  socket.on("pre-offer-answer", (data) => {
+    handlePreOfferAnswer(data);
+  });
+
+  socket.on("user-hanged-up", () => {
+    handleUserHangedUp();
+  });
 };
 
 export const registerNewUser = (username) => {
@@ -45,6 +57,10 @@ export const sendPreOffer = (data) => {
 
 export const sendPreOfferAnswer = (data) => {
   socket.emit("pre-offer-answer", data);
+};
+
+export const sendUserHangedUp = (data) => {
+  socket.emit("user-hanged-up", data);
 };
 
 const handleBroadcastEvents = (data) => {

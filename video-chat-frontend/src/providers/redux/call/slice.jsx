@@ -46,6 +46,17 @@ const callSlice = createSlice({
     setCallerUsername: (state, action) => {
       state.callerUsername = action.payload;
     },
+    setCallRejected: (state, action) => {
+      state.callRejected = action.payload;
+    },
+    resetCallDataState: (state, _) => {
+      (state.remoteStream = null),
+        (state.screenSharingActive = false),
+        (state.callerUsername = ""),
+        (state.localMicrophoneEnabled = true),
+        (state.localCameraEnabled = true),
+        (state.callingDialogVisible = false);
+    },
   },
 });
 // Todo: 1. Reducer
@@ -60,6 +71,8 @@ export const {
   setCallState,
   setCallingDialogVisible,
   setCallerUsername,
+  setCallRejected,
+  resetCallDataState,
 } = callAction;
 
 export default callReducer;
