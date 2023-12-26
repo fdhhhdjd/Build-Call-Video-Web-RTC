@@ -9,9 +9,11 @@ import CallRejectedDialog from "./CallRejectedDialog";
 import CallingDialog from "./CallingDialog";
 import IncomingCallDialog from "./IncomingCallDialog";
 import LocalVideoView from "./LocalVideoView";
+import RemoteVideoView from "./RemoteVideoView";
 
 const DirectCall = () => {
-  const { callingDialogVisible, callState, callRejected } = useSelectorCall();
+  const { callingDialogVisible, callState, callRejected, remoteStream } =
+    useSelectorCall();
   const { stopSound, playSound, clearTimePickUp } = useContextCall();
 
   React.useEffect(() => {
@@ -23,7 +25,8 @@ const DirectCall = () => {
     return () => {
       clearTimePickUp();
     };
-  }, [callState]);
+  }, [callingDialogVisible]);
+
   return (
     <React.Fragment>
       {/* 1. Video */}
@@ -37,6 +40,11 @@ const DirectCall = () => {
 
       {/* 4. Pop up call video caller */}
       {callState === callStates.CALL_REQUESTED && <IncomingCallDialog />}
+
+      {/* 5. Take camera call and caller */}
+      {remoteStream && callState === callStates.CALL_IN_PROGRESS && (
+        <RemoteVideoView />
+      )}
     </React.Fragment>
   );
 };

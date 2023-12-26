@@ -12,12 +12,16 @@ import {
   setCallerUsername,
   setCallingDialogVisible,
   setLocalStream,
+  setRemoteStream,
 } from "../../providers/redux/call/slice";
 import { store } from "../../providers/redux/store";
 import {
   sendPreOffer,
   sendPreOfferAnswer,
   sendUserHangedUp,
+  sendWebRTCAnswer,
+  sendWebRTCCandidate,
+  sendWebRTCOffer,
 } from "../wssConnection/wssConnection";
 
 let connectedUserSocketId;
@@ -104,11 +108,40 @@ export const resetCallData = () => {
   store.dispatch(setCallState(callStates.CALL_AVAILABLE));
 };
 
+// Todo: 7. Access caller
+export const acceptIncomingCallRequest = () => {
+  sendPreOfferAnswer({
+    callerSocketId: connectedUserSocketId,
+    answer: preOfferAnswers.CALL_ACCEPTED,
+  });
+
+  store.dispatch(setCallState(callStates.CALL_IN_PROGRESS));
+};
+
+const sendOffer = async () => {
+  const offer = await peerConnection.createOffer();
+  await peerConnection.setLocalDescription(offer);
+  sendWebRTCOffer({
+    calleeSocketId: connectedUserSocketId,
+    offer: offer,
+  });
+};
+
+export const handleOffer = async (data) => {
+  await peerConnection.setRemoteDescription(data.offer);
+  const answer = await peerConnection.createAnswer();
+  await peerConnection.setLocalDescription(answer);
+  sendWebRTCAnswer({
+    callerSocketId: connectedUserSocketId,
+    answer: answer,
+  });
+};
+
 export const handlePreOfferAnswer = (data) => {
   store.dispatch(setCallingDialogVisible(false));
 
   if (data.answer === preOfferAnswers.CALL_ACCEPTED) {
-    // sendOffer();
+    sendOffer();
   } else {
     let rejectionReason;
 
@@ -154,9 +187,47 @@ export const handleUserHangedUp = () => {
   resetCallDataAfterHangUp();
 };
 
+export const handleCandidate = async (data) => {
+  try {
+    console.log("adding ice candidates");
+    await peerConnection.addIceCandidate(data.candidate);
+  } catch (err) {
+    console.error(
+      "error occurred when trying to add received ice candidate",
+      err
+    );
+  }
+};
+
+export const handleAnswer = async (data) => {
+  await peerConnection.setRemoteDescription(data.answer);
+};
+
 // Todo: Connect peer
 const createPeerConnection = () => {
   peerConnection = new RTCPeerConnection(configuration);
+
+  // Get camera call and caller
+  const localStream = store.getState().call.localStream;
+
+  for (const track of localStream.getTracks()) {
+    peerConnection.addTrack(track, localStream);
+  }
+
+  peerConnection.ontrack = ({ streams: [stream] }) => {
+    store.dispatch(setRemoteStream(stream));
+  };
+
+  peerConnection.onicecandidate = (event) => {
+    console.log("geeing candidates from stun server");
+    if (event.candidate) {
+      sendWebRTCCandidate({
+        candidate: event.candidate,
+        connectedUserSocketId: connectedUserSocketId,
+      });
+    }
+  };
+
   peerConnection.onconnectionstatechange = (event) => {
     if (peerConnection.connectionState === "connected") {
       console.log("Connected with other peer success ✅");

@@ -49,6 +49,9 @@ const callSlice = createSlice({
     setCallRejected: (state, action) => {
       state.callRejected = action.payload;
     },
+    setRemoteStream: (state, action) => {
+      state.remoteStream = action.payload;
+    },
     resetCallDataState: (state, _) => {
       (state.remoteStream = null),
         (state.screenSharingActive = false),
@@ -73,6 +76,7 @@ export const {
   setCallerUsername,
   setCallRejected,
   resetCallDataState,
+  setRemoteStream,
 } = callAction;
 
 export default callReducer;

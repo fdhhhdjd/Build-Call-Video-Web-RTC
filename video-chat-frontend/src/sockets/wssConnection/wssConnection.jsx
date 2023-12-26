@@ -6,6 +6,9 @@ import { store } from "../../providers/redux/store";
 import { setActiveUsers } from "../../providers/redux/auth/slice";
 import { broadcastEventTypes } from "../../common/constants";
 import {
+  handleAnswer,
+  handleCandidate,
+  handleOffer,
   handlePreOffer,
   handlePreOfferAnswer,
   handleUserHangedUp,
@@ -41,6 +44,18 @@ export const connectWithWebSocket = () => {
   socket.on("user-hanged-up", () => {
     handleUserHangedUp();
   });
+
+  socket.on("webRTC-candidate", (data) => {
+    handleCandidate(data);
+  });
+
+  socket.on("webRTC-answer", (data) => {
+    handleAnswer(data);
+  });
+
+  socket.on("webRTC-offer", (data) => {
+    handleOffer(data);
+  });
 };
 
 export const registerNewUser = (username) => {
@@ -61,6 +76,17 @@ export const sendPreOfferAnswer = (data) => {
 
 export const sendUserHangedUp = (data) => {
   socket.emit("user-hanged-up", data);
+};
+
+export const sendWebRTCOffer = (data) => {
+  socket.emit("webRTC-offer", data);
+};
+
+export const sendWebRTCCandidate = (data) => {
+  socket.emit("webRTC-candidate", data);
+};
+export const sendWebRTCAnswer = (data) => {
+  socket.emit("webRTC-answer", data);
 };
 
 const handleBroadcastEvents = (data) => {
