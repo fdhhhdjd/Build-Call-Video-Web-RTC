@@ -10,6 +10,7 @@ import CallingDialog from "./CallingDialog";
 import IncomingCallDialog from "./IncomingCallDialog";
 import LocalVideoView from "./LocalVideoView";
 import RemoteVideoView from "./RemoteVideoView";
+import ConversationButtons from "./ConversationButtons/ConversationButtons";
 
 const DirectCall = () => {
   const { callingDialogVisible, callState, callRejected, remoteStream } =
@@ -44,6 +45,10 @@ const DirectCall = () => {
       {/* 5. Take camera call and caller */}
       {remoteStream && callState === callStates.CALL_IN_PROGRESS && (
         <RemoteVideoView />
+      )}
+
+      {remoteStream && callState === callStates.CALL_IN_PROGRESS && (
+        <ConversationButtons />
       )}
     </React.Fragment>
   );

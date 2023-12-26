@@ -46,12 +46,25 @@ const callSlice = createSlice({
     setCallerUsername: (state, action) => {
       state.callerUsername = action.payload;
     },
-    setCallRejected: (state, action) => {
-      state.callRejected = action.payload;
-    },
     setRemoteStream: (state, action) => {
       state.remoteStream = action.payload;
     },
+
+    // Button
+    setLocalMicrophoneEnabled: (state, action) => {
+      state.localMicrophoneEnabled = action.payload;
+    },
+    setLocalCameraEnabled: (state, action) => {
+      state.localCameraEnabled = action.payload;
+    },
+    setScreenSharingActive: (state, action) => {
+      state.screenSharingActive = action.payload;
+    },
+    setCallRejected: (state, action) => {
+      state.callRejected = action.payload;
+    },
+
+    // Reset
     resetCallDataState: (state, _) => {
       (state.remoteStream = null),
         (state.screenSharingActive = false),
@@ -77,6 +90,9 @@ export const {
   setCallRejected,
   resetCallDataState,
   setRemoteStream,
+  setLocalMicrophoneEnabled,
+  setLocalCameraEnabled,
+  setScreenSharingActive,
 } = callAction;
 
 export default callReducer;

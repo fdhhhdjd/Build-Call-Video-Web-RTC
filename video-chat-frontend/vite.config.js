@@ -1,6 +1,4 @@
 //* LIB
-import { fileURLToPath } from "node:url";
-
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 import viteCompression from "vite-plugin-compression";
@@ -35,6 +33,7 @@ export default defineConfig(({ mode }) => {
     server: {
       // Frontend
       port: 9999,
+      // host: "0.0.0.0",
     },
     optimizeDeps: {
       include: ["./src/*.jsx"], // Add commonly used dependencies here
