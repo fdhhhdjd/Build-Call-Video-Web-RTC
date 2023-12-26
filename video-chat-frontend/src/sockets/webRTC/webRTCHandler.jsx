@@ -89,6 +89,14 @@ export const rejectIncomingCallRequest = () => {
   });
   resetCallData();
 };
+// Todo: Caller not pick up phone
+export const rejectIncomingCallNotPickupRequest = () => {
+  sendPreOfferAnswer({
+    callerSocketId: connectedUserSocketId,
+    answer: preOfferAnswers.CALL_NOT_AVAILABLE,
+  });
+  resetCallData();
+};
 
 // Todo: 6. Reset call video
 export const resetCallData = () => {

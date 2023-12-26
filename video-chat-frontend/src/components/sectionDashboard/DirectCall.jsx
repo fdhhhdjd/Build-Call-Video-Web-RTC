@@ -12,12 +12,10 @@ import LocalVideoView from "./LocalVideoView";
 
 const DirectCall = () => {
   const { callingDialogVisible, callState, callRejected } = useSelectorCall();
-  const { stopSound, playSound, handlePickUp, clearTimePickUp } =
-    useContextCall();
+  const { stopSound, playSound, clearTimePickUp } = useContextCall();
 
   React.useEffect(() => {
     if (callingDialogVisible) {
-      handlePickUp();
       playSound();
     } else {
       stopSound();

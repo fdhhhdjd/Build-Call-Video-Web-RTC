@@ -4,7 +4,7 @@ import React from "react";
 //* IMPORT
 import MusicMessageIncome from "../../assets/message.mp3";
 import { _10_SECOND } from "../../common/constants";
-import { hangUp } from "../../sockets/webRTC/webRTCHandler";
+import { rejectIncomingCallNotPickupRequest } from "../../sockets/webRTC/webRTCHandler";
 
 export const CallContext = React.createContext(null);
 
@@ -25,9 +25,9 @@ const CallProvider = ({ children }) => {
     }
   };
 
-  const handlePickUp = () => {
+  const handleNotPickUp = () => {
     timerCall.current = setTimeout(() => {
-      hangUp();
+      rejectIncomingCallNotPickupRequest();
     }, _10_SECOND);
   };
 
@@ -36,7 +36,7 @@ const CallProvider = ({ children }) => {
     stopSound();
   };
 
-  const data = { playSound, stopSound, handlePickUp, clearTimePickUp };
+  const data = { playSound, stopSound, handleNotPickUp, clearTimePickUp };
 
   CallContext.displayName = "Call Context";
 

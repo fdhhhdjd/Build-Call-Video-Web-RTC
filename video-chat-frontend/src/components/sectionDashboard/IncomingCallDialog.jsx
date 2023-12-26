@@ -2,20 +2,23 @@
 import React from "react";
 
 //* IMPORT
-import useContextCall from "../../hooks/useContextCall";
 import useSelectorCall from "../../hooks/useSelectorCall";
 import { rejectIncomingCallRequest } from "../../sockets/webRTC/webRTCHandler";
+import useContextCall from "../../hooks/useContextCall";
 
 const IncomingCallDialog = () => {
   const { callerUsername } = useSelectorCall();
-  const { stopSound } = useContextCall();
+  const { handleNotPickUp } = useContextCall();
 
   const handleAcceptButtonPressed = () => {};
 
   const handleRejectButtonPressed = () => {
     rejectIncomingCallRequest();
-    stopSound();
   };
+
+  React.useEffect(() => {
+    handleNotPickUp();
+  }, []);
 
   return (
     <div className="direct_call_dialog background_secondary_color">
