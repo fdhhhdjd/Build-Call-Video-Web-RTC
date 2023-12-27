@@ -12,7 +12,10 @@ import {
 
 import ConversationButton from "./ConversationButton";
 import useSelectorCall from "../../../hooks/useSelectorCall";
-import { hangUp } from "../../../sockets/webRTC/webRTCHandler";
+import {
+  hangUp,
+  switchForScreenSharingStream,
+} from "../../../sockets/webRTC/webRTCHandler";
 import { useDispatch } from "react-redux";
 import {
   setLocalCameraEnabled,
@@ -34,8 +37,12 @@ const styles = {
 };
 
 const ConversationButtons = () => {
-  const { localMicrophoneEnabled, localStream, localCameraEnabled } =
-    useSelectorCall();
+  const {
+    localMicrophoneEnabled,
+    localStream,
+    localCameraEnabled,
+    screenSharingActive,
+  } = useSelectorCall();
   const dispatch = useDispatch();
 
   const handleMicButtonPressed = () => {
@@ -48,6 +55,10 @@ const ConversationButtons = () => {
     const cameraEnabled = localCameraEnabled;
     localStream.getVideoTracks()[0].enabled = !cameraEnabled;
     dispatch(setLocalCameraEnabled(!cameraEnabled));
+  };
+
+  const handleScreenSharingButtonPressed = () => {
+    switchForScreenSharingStream();
   };
 
   const handleHangUpButtonPressed = () => {
@@ -72,6 +83,14 @@ const ConversationButtons = () => {
           <MdVideocam style={styles.icon} />
         ) : (
           <MdVideocamOff style={styles.icon} />
+        )}
+      </ConversationButton>
+
+      <ConversationButton onClickHandler={handleScreenSharingButtonPressed}>
+        {screenSharingActive ? (
+          <MdCamera style={styles.icon} />
+        ) : (
+          <MdVideoLabel style={styles.icon} />
         )}
       </ConversationButton>
     </div>

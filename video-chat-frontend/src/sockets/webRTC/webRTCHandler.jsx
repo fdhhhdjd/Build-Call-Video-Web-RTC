@@ -13,6 +13,7 @@ import {
   setCallingDialogVisible,
   setLocalStream,
   setRemoteStream,
+  setScreenSharingActive,
 } from "../../providers/redux/call/slice";
 import { store } from "../../providers/redux/store";
 import {
@@ -201,6 +202,38 @@ export const handleCandidate = async (data) => {
 
 export const handleAnswer = async (data) => {
   await peerConnection.setRemoteDescription(data.answer);
+};
+
+let screenSharingStream;
+export const switchForScreenSharingStream = async () => {
+  if (!store.getState().call.screenSharingActive) {
+    try {
+      screenSharingStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
+      store.dispatch(setScreenSharingActive(true));
+      const senders = peerConnection.getSenders();
+      const sender = senders.find(
+        (sender) =>
+          sender.track.kind === screenSharingStream.getVideoTracks()[0].kind
+      );
+      sender.replaceTrack(screenSharingStream.getVideoTracks()[0]);
+    } catch (err) {
+      console.error(
+        "error occured when trying to get screen sharing stream",
+        err
+      );
+    }
+  } else {
+    const localStream = store.getState().call.localStream;
+    const senders = peerConnection.getSenders();
+    const sender = senders.find(
+      (sender) => sender.track.kind === localStream.getVideoTracks()[0].kind
+    );
+    sender.replaceTrack(localStream.getVideoTracks()[0]);
+    store.dispatch(setScreenSharingActive(false));
+    screenSharingStream.getTracks().forEach((track) => track.stop());
+  }
 };
 
 // Todo: Connect peer

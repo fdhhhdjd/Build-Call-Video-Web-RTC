@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
     server: {
       // Frontend
       port: 9999,
-      // host: "0.0.0.0",
+      host: "0.0.0.0",
     },
     optimizeDeps: {
       include: ["./src/*.jsx"], // Add commonly used dependencies here
